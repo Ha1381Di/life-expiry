@@ -32,7 +32,6 @@ I also wanted it to respect different cultures and languages, which is why I int
 * **Backend / Database:** Firebase Firestore (for Cloud Sync).
 * **PWA:** Service Worker and Web Manifest.
 
-## 🚀 How to Run 
+## 🚀 Link To The Site
 
-   ```bash
    https://ha1381di.github.io/life-expiry/
