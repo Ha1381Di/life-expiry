@@ -32,8 +32,7 @@ I also wanted it to respect different cultures and languages, which is why I int
 * **Backend / Database:** Firebase Firestore (for Cloud Sync).
 * **PWA:** Service Worker and Web Manifest.
 
-## 🚀 How to Run Locally
+## 🚀 How to Run 
 
-1. Clone this repository:
    ```bash
-   git clone https://github.com/Ha1381Di/life-expiry.git
+   https://ha1381di.github.io/life-expiry/
