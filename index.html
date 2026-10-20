@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life Expiry</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f766e">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="header-row">
+      <div>
+        <h1 id="app-title">⏳ Life Expiry</h1>
+        <p class="sub" id="app-sub">Everything eventually runs out — remembered here.</p>
+      </div>
+      <div class="header-actions">
+        <div class="theme-dropdown" id="theme-dropdown">
+          <button class="icon-btn" id="theme-btn" title="Change Theme">🌅</button>
+          <div class="theme-menu" id="theme-menu">
+            <button data-theme="light">🌅 Morning Dew</button>
+            <button data-theme="dark">🌌 Midnight Velvet</button>
+            <button data-theme="luxe">🌸 Golden Blush</button>
+          </div>
+        </div>
+        <button class="icon-btn" id="lang-btn" title="Change Language">🌐</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs-nav">
+    <button class="tab-btn active" data-tab="tab-list" id="nav-list">📋 <span id="nav-lbl-list">My Items</span></button>
+    <button class="tab-btn" data-tab="tab-add" id="nav-add">➕ <span id="nav-lbl-add">Add New</span></button>
+    <button class="tab-btn" data-tab="tab-settings" id="nav-settings">⚙️ <span id="nav-lbl-settings">Settings</span></button>
+  </nav>
+
+  <div class="tab-content active" id="tab-list">
+    <div class="stats" id="stats-bar">
+      <div class="stat"><b id="s-total">0</b><span id="lbl-total">Total</span></div>
+      <div class="stat exp"><b id="s-exp">0</b><span id="lbl-exp">Expired</span></div>
+      <div class="stat soon"><b id="s-soon">0</b><span id="lbl-soon">Next 7 days</span></div>
+      <div class="stat"><b id="s-ok">0</b><span id="lbl-ok">Safe</span></div>
+    </div>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="🔍 Search everything...">
+    </div>
+
+    <div class="toolbar-row">
+      <select id="sort">
+        <option value="date-asc">Date (soonest)</option>
+        <option value="date-desc">Date (latest)</option>
+        <option value="name-asc">Name (A–Z)</option>
+        <option value="urgency">Urgency</option>
+      </select>
+      <!-- NEW LAYOUT TOGGLE BUTTON -->
+      <button class="btn btn-ghost btn-sm" id="layout-btn">📑 Compact</button>
+      
+      <button class="btn btn-ghost btn-sm" id="select-all-btn">Select all</button>
+      <button class="btn btn-ghost btn-sm danger" id="delete-expired-btn">Delete expired</button>
+    </div>
+
+    <div class="view-toggle">
+      <button class="btn btn-ghost active" id="view-active-btn">📋 Active</button>
+      <button class="btn btn-ghost" id="view-archived-btn">🗄️ Archived</button>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="bulk-bar" id="bulk-bar" hidden>
+      <span id="bulk-count">0 selected</span>
+      <div class="bulk-actions">
+        <button class="btn btn-ghost btn-sm" id="bulk-clear-btn">Clear</button>
+        <button class="btn btn-primary btn-sm danger" id="bulk-delete-btn">Delete</button>
+      </div>
+    </div>
+
+    <div id="list"></div>
+  </div>
+
+  <div class="tab-content" id="tab-add">
+    <div class="card">
+      <h2 id="form-title">➕ Add new item</h2>
+      <form id="form">
+        <div class="row">
+          <div class="field" style="flex:2">
+            <label for="name" id="lbl-name">Name</label>
+            <input id="name" type="text" placeholder="e.g. Milk, Passport" required>
+          </div>
+          <div class="field">
+            <label for="cat" id="lbl-cat">Category</label>
+            <select id="cat"></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="date" id="lbl-date">Expiry date</label>
+            <input id="date" type="date" required>
+          </div>
+          <div class="field">
+            <label for="location" id="lbl-location">Location (optional)</label>
+            <input id="location" type="text" placeholder="e.g. Fridge">
+          </div>
+          <div class="field">
+            <label for="tags" id="lbl-tags">Tags</label>
+            <input id="tags" type="text" placeholder="e.g. urgent, work">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="qty" id="lbl-qty">Quantity</label>
+            <input id="qty" type="number" min="1" step="1" placeholder="e.g. 2">
+          </div>
+          <div class="field">
+            <label for="unit" id="lbl-unit">Unit</label>
+            <input id="unit" type="text" placeholder="e.g. kg">
+          </div>
+          <div class="field">
+            <label for="recurring" id="lbl-recurring">Repeat</label>
+            <select id="recurring">
+              <option value="">Not recurring</option>
+              <option value="day">Daily</option>
+              <option value="week">Weekly</option>
+              <option value="month">Monthly</option>
+              <option value="year">Yearly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="hint" id="date-hint"></div>
+
+        <div class="quick">
+          <button type="button" data-days="3">3 days</button>
+          <button type="button" data-days="7">1 week</button>
+          <button type="button" data-days="30">1 month</button>
+        </div>
+
+        <div class="actions" style="margin-top: 20px;">
+          <button class="btn btn-primary" type="submit" id="submit-btn" style="flex: 1;">Save Item</button>
+          <button class="btn btn-ghost" type="button" id="cancel-btn" style="display:none">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-settings">
+    <div class="card">
+      <h2>⚙️ Settings & Tools</h2>
+      
+      <div class="settings-group">
+        <h4>Calendar Display</h4>
+        <select id="cal" style="width: 100%;"></select>
+      </div>
+
+      <div class="settings-group">
+        <h4>Cloud Sync</h4>
+        <button class="btn btn-ghost" id="cloud-btn" style="width:100%; justify-content:flex-start;">☁️ Connect to Cloud</button>
+      </div>
+
+      <div class="settings-group">
+        <h4>Data Management</h4>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-ghost" id="export-btn" style="flex:1;">⬇ Backup</button>
+          <button class="btn btn-ghost" id="csv-btn" style="flex:1;">📊 CSV</button>
+          <button class="btn btn-ghost" id="import-btn" style="flex:1;">⬆ Restore</button>
+          <input type="file" id="import-file" accept="application/json" hidden>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h4>Statistics</h4>
+        <button class="btn btn-ghost" id="stats-btn" style="width:100%; justify-content:flex-start;">📈 View Stats</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-backdrop" id="stats-modal" hidden>
+  <div class="modal">
+    <div class="modal-header"><h3>📈 Statistics</h3><button class="icon-btn" id="stats-close">✕</button></div>
+    <div class="modal-body"><h4>By category</h4><div id="chart-categories"></div></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="cloud-modal" hidden>
+  <div class="modal">
+    <div class="modal-header"><h3>☁️ Cloud Sync</h3><button class="icon-btn" id="cloud-close">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Your Sync Code</label><input id="sync-code-input" type="text" placeholder="e.g. A1B2C3" style="text-transform:uppercase;"></div>
+      <button class="btn btn-primary" id="sync-save-btn" style="width:100%;">Connect</button>
+      <p id="sync-status" style="font-size:0.85rem; text-align:center; margin-top:15px; color:var(--accent);"></p>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toasts"></div>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

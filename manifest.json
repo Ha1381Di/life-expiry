@@ -1,0 +1,14 @@
+{
+  "name": "Life Expiry",
+  "short_name": "Life Expiry",
+  "description": "Track expiry dates for food, medicine, warranties, subscriptions, and more.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4f1",
+  "theme_color": "#0f766e",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
